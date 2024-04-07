@@ -1,0 +1,140 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Rimac Concept Two 3D Model</title>
+    <style>
+        body { margin: 0; }
+        canvas { display: block; }
+    </style>
+</head>
+<body>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/three.js/r128/three.min.js"></script>
+    <script>
+        // Create scene
+        const scene = new THREE.Scene();
+
+        // Create camera
+        const camera = new THREE.PerspectiveCamera(75, window.innerWidth / window.innerHeight, 0.1, 1000);
+        camera.position.z = 10;
+
+        // Create renderer
+        const renderer = new THREE.WebGLRenderer();
+        renderer.setSize(window.innerWidth, window.innerHeight);
+        document.body.appendChild(renderer.domElement);
+
+        // Create car body
+        const carGeometry = new THREE.BoxGeometry(2, 1, 0.5);
+        const carMaterial = new THREE.MeshPhongMaterial({ color: 0xaaaaaa });
+        const carBody = new THREE.Mesh(carGeometry, carMaterial);
+        scene.add(carBody);
+
+        // Create front bumper
+        const bumperGeometry = new THREE.BoxGeometry(1.5, 0.25, 0.25);
+        const bumperMaterial = new THREE.MeshPhongMaterial({ color: 0xaaaaaa });
+        const bumper = new THREE.Mesh(bumperGeometry, bumperMaterial);
+        bumper.position.set(0, -0.375, 0.25);
+        scene.add(bumper);
+
+        // Create rear fin
+        const finGeometry = new THREE.BoxGeometry(0.1, 0.75, 0.1);
+        const finMaterial = new THREE.MeshPhongMaterial({ color: 0xff0000 });
+        const fin = new THREE.Mesh(finGeometry, finMaterial);
+        fin.position.set(0, 0.25, -0.25);
+        scene.add(fin);
+
+        // Create transparent window
+        const windowGeometry = new THREE.BoxGeometry(1.5, 0.75, 0.01);
+        const windowMaterial = new THREE.MeshPhongMaterial({ color: 0xffffff, transparent: true, opacity: 0.5 });
+        const window = new THREE.Mesh(windowGeometry, windowMaterial);
+        window.position.set(0, 0.125, 0);
+        carBody.add(window);
+
+        // Create steering wheel
+        const wheelGeometry = new THREE.TorusGeometry(0.15, 0.05, 16, 32);
+        const wheelMaterial = new THREE.MeshPhongMaterial({ color: 0xaaaaaa });
+        const steeringWheel = new THREE.Mesh(wheelGeometry, wheelMaterial);
+        steeringWheel.position.set(0, 0.2, -0.1); // Adjust position as needed
+        scene.add(steeringWheel);
+
+        // Create seat geometry
+        const seatGeometry = new THREE.BoxGeometry(0.8, 0.25, 0.4);
+        const seatMaterial = new THREE.MeshPhongMaterial({ color: 0xaaaaaa });
+        const driverSeat = new THREE.Mesh(seatGeometry, seatMaterial);
+        const passengerSeat = new THREE.Mesh(seatGeometry, seatMaterial);
+        driverSeat.position.set(-0.3, -0.25, 0.05);
+        passengerSeat.position.set(0.3, -0.25, 0.05);
+        carBody.add(driverSeat);
+        carBody.add(passengerSeat);
+
+        // Create pedal geometry
+        const pedalGeometry = new THREE.BoxGeometry(0.1, 0.05, 0.2);
+        const pedalMaterial = new THREE.MeshPhongMaterial({ color: 0xaaaaaa });
+        const brakePedal = new THREE.Mesh(pedalGeometry, pedalMaterial);
+        const acceleratorPedal = new THREE.Mesh(pedalGeometry, pedalMaterial);
+        brakePedal.position.set(-0.2, -0.35, 0.1);
+        acceleratorPedal.position.set(0.2, -0.35, 0.1);
+        carBody.add(brakePedal);
+        carBody.add(acceleratorPedal);
+
+        // Create gear lever
+        const gearLeverGeometry = new THREE.BoxGeometry(0.05, 0.5, 0.05);
+        const gearLeverMaterial = new THREE.MeshPhongMaterial({ color: 0xaaaaaa });
+        const gearLever = new THREE.Mesh(gearLeverGeometry, gearLeverMaterial);
+        gearLever.position.set(0, -0.35, 0.2);
+        carBody.add(gearLever);
+
+        // Create dashboard
+        const dashboardGeometry = new THREE.BoxGeometry(1.5, 0.5, 0.05);
+        const dashboardMaterial = new THREE.MeshPhongMaterial({ color: 0xaaaaaa });
+        const dashboard = new THREE.Mesh(dashboardGeometry, dashboardMaterial);
+        dashboard.position.set(0, 0.05, 0.15);
+        carBody.add(dashboard);
+
+        // Create speedometer
+        const speedometerGeometry = new THREE.CircleGeometry(0.1, 32);
+        const speedometerMaterial = new THREE.MeshPhongMaterial({ color: 0xffffff });
+        const speedometer = new THREE.Mesh(speedometerGeometry, speedometerMaterial);
+        speedometer.position.set(-0.5, 0.1, 0.2);
+        carBody.add(speedometer);
+
+        // Create tachometer
+        const tachometerGeometry = new THREE.CircleGeometry(0.1, 32);
+        const tachometerMaterial = new THREE.MeshPhongMaterial({ color: 0xffffff });
+        const tachometer = new THREE.Mesh(tachometerGeometry, tachometerMaterial);
+        tachometer.position.set(0.5, 0.1, 0.2);
+        carBody.add(tachometer);
+
+        // Create ground plane
+        const groundGeometry = new THREE.PlaneGeometry(20, 20);
+        const groundMaterial = new THREE.MeshPhongMaterial({ color: 0x00aa00, side: THREE.DoubleSide });
+        const ground = new THREE.Mesh(groundGeometry, groundMaterial);
+        ground.rotation.x = -Math.PI / 2;
+        ground.position.y = -1;
+        scene.add(ground);
+
+        // Create directional light
+        const directionalLight = new THREE.DirectionalLight(0xffffff, 0.5);
+        directionalLight.position.set(0, 10, 5);
+        scene.add(directionalLight);
+
+        // Create ambient light
+        const ambientLight = new THREE.AmbientLight(0xffffff, 0.5);
+        scene.add(ambientLight);
+
+        // Animation loop
+        function animate() {
+            requestAnimationFrame(animate);
+
+            carBody.rotation.x += 0.01;
+            carBody.rotation.y += 0.01;
+            fin.rotation.y += 0.01;
+
+            renderer.render(scene, camera);
+        }
+
+        animate();
+    </script>
+</body>
+</html>
